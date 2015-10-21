@@ -16,15 +16,23 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
+    database_cleaner (1.5.0)
     enumerable-lazy (0.0.1)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.4)
     mime-types (1.25.1)
     minitest (5.8.1)
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
     moneta (0.7.20)
+    multi_xml (0.5.5)
     mustermann19 (0.4.0)
       enumerable-lazy
     padrino (0.13.0)
@@ -87,7 +95,10 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (>= 3.1)
+  database_cleaner
+  httparty
   minitest
+  mocha
   padrino (= 0.13.0)
   rack-test
   rake

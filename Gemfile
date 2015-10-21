@@ -19,10 +19,15 @@ gem 'rake'
 # Component requirements
 gem 'activerecord', '>= 3.1', :require => 'active_record'
 gem 'sqlite3'
+gem 'httparty'
 
 # Test requirements
-gem 'minitest', :require => 'minitest/autorun', :group => 'test'
-gem 'rack-test', :require => 'rack/test', :group => 'test'
+group :test do
+  gem 'minitest', :require => 'minitest/autorun'
+  gem 'rack-test', :require => 'rack/test'
+  gem 'database_cleaner'
+  gem 'mocha'
+end
 
 # Padrino Stable Gem
 gem 'padrino', '0.13.0'
