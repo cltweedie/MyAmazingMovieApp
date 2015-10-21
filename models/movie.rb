@@ -2,6 +2,10 @@ class Movie < ActiveRecord::Base
 
   before_save :set_slug
 
+  def self.slugify(title)
+    title.squeeze.strip.downcase.gsub(" ", "-")
+  end
+
   def self.get_film_info(title)
     imdb_data = HTTParty.get("http://www.omdbapi.com/?t=#{title}")
 

@@ -15,6 +15,7 @@ source 'https://rubygems.org'
 
 # Project requirements
 gem 'rake'
+gem 'pry'
 
 # Component requirements
 gem 'activerecord', '>= 3.1', :require => 'active_record'
