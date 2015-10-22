@@ -62,5 +62,26 @@ module MyAmazingMovieApp
     #     render 'errors/500'
     #   end
     #
+
+    before do
+      unless request.path == '/login' || session[:logged_in]
+        redirect '/login'
+      end
+    end
+
+    get :login do
+      render '/login'
+    end
+
+    post :login do
+      # set a boolean logged_in instead of storing the password
+      if params[:password] == "coolbeans"
+        session[:logged_in] = true
+        redirect '/movies'
+      else
+        redirect :login
+      end
+    end
+
   end
 end

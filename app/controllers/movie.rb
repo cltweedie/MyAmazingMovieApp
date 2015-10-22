@@ -1,33 +1,34 @@
 require 'pry'
 
+# complete crud actions
+# named parameters
+# tests all passing
+# validations
+# use link_to form_tag etc in views
+# use symbol notation
+# flash notices for success, errors etc
+# flash[:message] = "Movie added!"
+# use find_or_create_by to stop duplicates
+
 MyAmazingMovieApp::App.controllers :movies do
 
   # COLLECTION ROUTES
 
   before do
-    unless env['PATH_INFO'] == '/movies/login' || session[:password] == "coolbeans"
-      redirect '/movies/login'
+    unless session[:logged_in]
+      redirect '/login'
     end
   end
 
-  get '/' do
+  get :index do
     render 'movie/list'
   end
 
-  get '/login' do
-    render 'movie/login'
-  end
-
-  post '/login' do
-    session[:password] = params[:password]
-    redirect '/movies'
-  end
-
-  get '/new' do
+  get :new do
     render 'movie/new'
   end
 
-  post '/create' do
+  post :create do
     @movie_details = { title: params[:title], year: params[:year],
       description: params[:description], poster: params[:poster],
       runtime: params[:runtime] }
@@ -35,14 +36,16 @@ MyAmazingMovieApp::App.controllers :movies do
     redirect "/movies/#{@movie.slug}"
   end
 
-  get '/find' do
+  get :find do
     render '/movie/find'
   end
 
-  post '/find' do
+  post :find do
     movie = Movie.get_film_info(params[:title])
     redirect "/movies/#{movie.slug}"
   end
+
+  # MEMBER ROUTES
 
   get '/:slug' do
     @movie = Movie.find_by(slug: params[:slug])
@@ -54,21 +57,20 @@ MyAmazingMovieApp::App.controllers :movies do
     end
   end
 
-  # MEMBER ROUTES
-
-  get '/:id/edit' do
+  # :edit, :with => :id
+  get :edit, :map =>"/movies/:id/edit" do
     @movie = Movie.find(params[:id])
     render 'movie/edit'
   end
 
-  post '/:id/update' do
+  post :update, :map =>'movies/:id/update' do
     m = Movie.find(params[:id])
     m.update!(params)
     200
     redirect "/movies/#{m.slug}"
   end
 
-  delete '/:id/delete' do
+  post '/:id/delete' do
     m = Movie.find(params[:id])
     m.destroy!
 
