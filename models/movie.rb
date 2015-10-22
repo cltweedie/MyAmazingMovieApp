@@ -9,11 +9,18 @@ class Movie < ActiveRecord::Base
   def self.get_film_info(title)
     imdb_data = HTTParty.get("http://www.omdbapi.com/?t=#{title}")
 
-    m = Movie.create!(title: imdb_data["Title"])
+    m = Movie.new(title: imdb_data["Title"],
+                      poster: imdb_data["Poster"],
+                      year: imdb_data["Year"],
+                      runtime: imdb_data["Runtime"],
+                      description: imdb_data["Plot"]
+      )
+    m.save!
+    m
   end
 
   protected
   def set_slug
-    self.slug = title.squeeze.strip.downcase.gsub(" ", "-")
+    self.slug = self.title.chomp.strip.downcase.gsub(" ", "-")
   end
 end

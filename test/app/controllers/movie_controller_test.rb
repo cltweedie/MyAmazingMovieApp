@@ -81,6 +81,7 @@ describe "saving a movie" do
 
   before do
     post "/movies/create", { movie: { title: "The Matrix", year: 1999, runtime: "110 minutes" } }
+    # this must be a nested hash, currently isn't on site.
   end
 
   it "saves the new movie to the database" do
@@ -93,7 +94,7 @@ describe "saving a movie" do
   it "redirects to the movie show page" do
     assert last_response.redirect?
     follow_redirect!
-    last_request.path.must_equal "/the-matrix"
+    last_request.path.must_equal "/movies/the-matrix"
   end
 end
 
@@ -112,7 +113,3 @@ describe "deleting a movie" do
   end
 end
 
-# Todo: Write unit tests for creating a movie:
-# 1. Create a controller action that displays a form for a new movie
-# 2. Create a controller action that takes the form submission and
-# creates a new movie in the databse.

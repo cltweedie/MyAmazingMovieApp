@@ -1,1 +1,12 @@
-<h1><%= @movie.title %></h1>
+<div class="col-md-6">
+  <h2><strong><%= @movie.title %></strong></h2>
+  <h4><strong>Year:</strong> <%= @movie.year %></h4>
+  <h4><strong>Description:</strong> <%= @movie.description %></h4>
+  <h4><strong>Runtime:</strong> <%= @movie.runtime %></h4>
+  <br>
+  <a href="/movies/<%= @movie.id %>/edit" class="btn btn-warning" >Edit</a>
+  <a href="/movies/<%= @movie.id %>/delete" class="btn btn-danger">Delete</a>
+</div>
+<div class="col-md-5" >
+<img src="<%= @movie.poster %>" alt="movie poster" class="poster" />
+</div>

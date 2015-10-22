@@ -9,5 +9,6 @@ module MyAmazingMovieApp
     end
 
     helpers MovieHelper
+    layout :layout
   end
 end

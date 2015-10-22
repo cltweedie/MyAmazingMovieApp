@@ -1,5 +1,7 @@
-<ul>
+<ul class="list-group">
   <% Movie.all.each do |m| %>
-    <li><%= m.title %></li>
+    <li class="list-group-item">
+      <a href="/movies/<%= m.slug %>"><%= m.title %></a>
+    </li>
   <% end %>
 </ul>
