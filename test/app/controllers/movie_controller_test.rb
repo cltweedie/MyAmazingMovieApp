@@ -32,7 +32,7 @@ describe "GET to /movies" do
   before do
     post MyAmazingMovieApp::App.url_for(:login), password: "coolbeans"
     Movie.create!(title: "Jaws")
-    get '/movies'
+    get MyAmazingMovieApp::App.url_for(:movies, :index)
   end
 
   it "should display all of the films" do
@@ -46,7 +46,7 @@ describe "Editing a movie" do
   before do
     post MyAmazingMovieApp::App.url_for(:login), password: "coolbeans"
     @movie = Movie.create!(title: "Jaws")
-    get "/movies/#{@movie.id}/edit"
+    get MyAmazingMovieApp::App.url_for(:movies, :edit, id: @movie.id)
   end
 
   it "should display a form for me to edit my movie" do
@@ -60,7 +60,7 @@ describe "submitting my changes" do
   before do
     @movie = Movie.create!(title: "Jaws")
     post MyAmazingMovieApp::App.url_for(:login), password: "coolbeans"
-    post MyAmazingMovieApp::App.url_for(:movies, :update, id: @movie.id), title: "Jaws 2"
+    put MyAmazingMovieApp::App.url_for(:movies, :update, id: @movie.id), movie: { title: "Jaws 2" }
   end
 
   it "should update the movie" do
@@ -86,7 +86,7 @@ describe "saving a movie" do
 
   before do
     post MyAmazingMovieApp::App.url_for(:login), password: "coolbeans"
-    post MyAmazingMovieApp::App.url_for(:movies, :create), { title: "The Matrix", year: 1999, runtime: "110 minutes" }
+    post MyAmazingMovieApp::App.url_for(:movies, :new), { movie: { title: "The Matrix", year: 1999, runtime: "110 minutes" } }
   end
 
   it "saves the new movie to the database" do
@@ -111,7 +111,7 @@ describe "deleting a movie" do
   end
 
   it "finds and deletes the movie using it's ID" do
-    post MyAmazingMovieApp::App.url_for(:movies, :delete, id: @movie.id)
+    delete MyAmazingMovieApp::App.url_for(:movies, :delete, id: @movie.id)
     post "movies/#{@movie_id}/delete"
 
     assert_raises(ActiveRecord::RecordNotFound) do
