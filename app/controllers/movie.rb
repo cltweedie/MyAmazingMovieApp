@@ -1,24 +1,8 @@
 require 'pry'
 
-# complete crud actions
-# named parameters
-# tests all passing
-# validations
-# use link_to form_tag etc in views
-# use symbol notation
-# flash notices for success, errors etc
-# flash[:message] = "Movie added!"
-# use find_or_create_by to stop duplicates
-
 MyAmazingMovieApp::App.controllers :movies do
 
   # COLLECTION ROUTES
-
-  before do
-    unless session[:logged_in]
-      redirect '/login'
-    end
-  end
 
   get :index do
     render 'movie/list'
@@ -33,7 +17,8 @@ MyAmazingMovieApp::App.controllers :movies do
       description: params[:description], poster: params[:poster],
       runtime: params[:runtime] }
     @movie = Movie.create!(@movie_details)
-    redirect "/movies/#{@movie.slug}"
+    flash[:message] = "Movie successfully added!"
+    redirect url_for(:movies, :show, slug: @movie.slug)
   end
 
   get :find do
@@ -42,14 +27,14 @@ MyAmazingMovieApp::App.controllers :movies do
 
   post :find do
     movie = Movie.get_film_info(params[:title])
-    redirect "/movies/#{movie.slug}"
+    flash[:message] = "We found your movie!"
+    redirect url_for(:movies, :show, slug: movie.slug)
   end
 
   # MEMBER ROUTES
 
-  get '/:slug' do
+  get :show, map: '/movies/:slug' do
     @movie = Movie.find_by(slug: params[:slug])
-    puts @movie.title
     if @movie
       render 'movie/show'
     else
@@ -57,24 +42,24 @@ MyAmazingMovieApp::App.controllers :movies do
     end
   end
 
-  # :edit, :with => :id
   get :edit, :map =>"/movies/:id/edit" do
     @movie = Movie.find(params[:id])
     render 'movie/edit'
   end
 
-  post :update, :map =>'movies/:id/update' do
+  put :update, :map => '/movies/:id/update' do
     m = Movie.find(params[:id])
-    m.update!(params)
+    m.update!(params[:movie])
     200
-    redirect "/movies/#{m.slug}"
+    flash[:message] = "Movie successfully updated"
+    redirect url_for(:movies, :show, slug: m.slug)
   end
 
-  post '/:id/delete' do
+  delete :delete, :map =>"/movies/:id/delete" do
     m = Movie.find(params[:id])
     m.destroy!
-
-    redirect "/movies"
+    flash[:message] = "Movie successfully deleted"
+    redirect url_for(:movies, :index)
   end
 
 end

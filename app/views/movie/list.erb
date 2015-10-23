@@ -1,7 +1,8 @@
-<ul class="list-group">
-  <% Movie.all.each do |m| %>
-    <li class="list-group-item">
-      <a href="/movies/<%= m.slug %>"><%= m.title %></a>
-    </li>
-  <% end %>
-</ul>
+<% Movie.order(:title).each do |m| %>
+    <div class="col-md-3" style="height: 400px">
+      <a href="/movies/<%= m.slug %>">
+        <img src="<%= m.poster %>" alt="poster"/>
+      </a>
+    </div>
+<% end %>
+

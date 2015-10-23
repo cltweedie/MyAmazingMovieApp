@@ -1,34 +1,24 @@
 <h1>Edit <%= @movie.title %></h1>
 
-<form action="/movies/<%= @movie.id %>/update" method="POST" class="col-md-7" >
-  <div class="form-group">
-    <label for="title" >Title:</label>
-    <input type="text" name="title" class="form-control" value="<%= @movie.title %>" />
-  </div>
-  <div class="form-group">
-    <label for="year" >Year:</label>
-    <select class="form-control" name="year">
-      <% (1920..2018).each do |y| %>
-        <option><%= y %></option>
-      <% end %>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="description">Description:</label>
-    <textarea class="form-control" name="description" rows="6"><%= @movie.description %></textarea>
-  </div>
-  <div class="form-group">
-    <label for="poster" >Poster URL:</label>
-    <input type="text" name="poster" class="form-control" value="<%= @movie.poster %>" />
-  </div>
-  <div class="form-group">
-    <label for="runtime" >Runtime:</label>
-    <input type="text" name="runtime" class="form-control" value="<%= @movie.runtime %>" />
-  </div>
-  <br>
-  <input type="submit" class="btn btn-primary btn-lg" value="Edit Movie!" />
-</form>
+<% form_for( @movie, url_for( :movies, :update, id: @movie.id ),
+            class: "form-group col-md-7", :method => :put ) do |f| %>
 
-<div class="col-md-5" >
-<img src="<%= @movie.poster %>" alt="movie poster" class="poster" />
-</div>
+  <%= f.label :title %>
+  <%= f.text_field :title, class: "form-control" %>
+
+  <%= f.label :year %>
+  <%= f.text_field :year, class: "form-control" %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description, class: "form-control", rows: 5 %>
+
+  <%= f.label :poster %>
+  <%= f.text_field :poster, class: "form-control" %>
+
+  <%= f.label :runtime %>
+  <%= f.text_field :runtime, class: "form-control" %>
+
+  <%= f.submit :update, class: "btn btn-primary" %>
+
+<% end %>
+

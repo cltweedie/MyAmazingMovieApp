@@ -1,5 +1,7 @@
 class Movie < ActiveRecord::Base
 
+  validates :title, presence: true
+
   before_save :set_slug
 
   def self.slugify(title)

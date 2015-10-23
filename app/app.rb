@@ -3,6 +3,7 @@ module MyAmazingMovieApp
     use ConnectionPoolManagement
     register Padrino::Mailer
     register Padrino::Helpers
+    use Rack::MethodOverride
 
     enable :sessions
 
@@ -64,8 +65,13 @@ module MyAmazingMovieApp
     #
 
     before do
-      unless request.path == '/login' || session[:logged_in]
-        redirect '/login'
+      if flash[:message] && (flash[:message].include? "problem")
+        @message_type = "danger"
+      elsif flash[:message]
+        @message_type = "success"
+      end
+      unless request.path == url_for(:login) || session[:logged_in]
+        redirect :login
       end
     end
 
@@ -74,11 +80,12 @@ module MyAmazingMovieApp
     end
 
     post :login do
-      # set a boolean logged_in instead of storing the password
       if params[:password] == "coolbeans"
         session[:logged_in] = true
-        redirect '/movies'
+        flash[:message] = "You have successfully logged in!"
+        redirect url_for(:movies, :index)
       else
+        flash[:message] = "There was a problem with that password. Try again."
         redirect :login
       end
     end
