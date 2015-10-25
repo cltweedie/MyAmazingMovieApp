@@ -4,9 +4,23 @@ MyAmazingMovieApp::App.controllers :actors do
     201
   end
 
+  get :index do
+    render 'actors/index'
+  end
+
   get :index, :parent => :movies do
     #find all the actors
+    render 'actors/show'
     200
+  end
+
+  get :show, map: '/actors/:id' do
+    @actor = Actor.find(params[:id])
+    if @actor
+      render 'actors/show'
+    else
+      404
+    end
   end
 
   # think about when you should nest and when you shouldn't

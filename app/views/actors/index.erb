@@ -1,0 +1,8 @@
+<% Actor.order(:name).each do |a| %>
+    <li class="list-group-item">
+      <a href="/actors/<%= a.id %>"><%= a.name %></a>
+      <p class="pull-right">
+        <%= a.format_movies %>
+      </p>
+    </li>
+<% end %>
