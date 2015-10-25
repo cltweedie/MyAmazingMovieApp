@@ -8,6 +8,9 @@ class Movie < ActiveRecord::Base
   has_many :movie_writers
   has_many :writers, :through => :movie_writers
 
+  has_many :movie_genres
+  has_many :genres, :through => :movie_genres
+
   validates :title, presence: true
 
   before_save :set_slug
@@ -27,13 +30,11 @@ class Movie < ActiveRecord::Base
       )
     m.director = Director.create!(name: imdb_data["Director"])
     actors = Actor.get_actors(imdb_data)
-    actors.each do |a|
-      m.actors << Actor.find_or_create_by(name: a)
-    end
+    actors.each { |a| m.actors << Actor.find_or_create_by(name: a) }
     writers = Writer.get_writers(imdb_data)
-    writers.each do |w|
-      m.writers << Writer.find_or_create_by(name: w)
-    end
+    writers.each { |w| m.writers << Writer.find_or_create_by(name: w) }
+    genres = Genre.get_genres(imdb_data)
+    genres.each { |g| m.genres << Genre.find_or_create_by(name: g) }
     m.save!
     m
   end
