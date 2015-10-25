@@ -1,5 +1,10 @@
 class Movie < ActiveRecord::Base
 
+  belongs_to :director
+
+  has_many :actor_movies
+  has_many :actors, :through => :actor_movies
+
   validates :title, presence: true
 
   before_save :set_slug
@@ -17,6 +22,11 @@ class Movie < ActiveRecord::Base
                       runtime: imdb_data["Runtime"],
                       description: imdb_data["Plot"]
       )
+    m.director = Director.create!(name: imdb_data["Director"])
+    actors = Actor.get_actors(imdb_data)
+    actors.each do |a|
+      m.actors << Actor.create!(name: a)
+    end
     m.save!
     m
   end
