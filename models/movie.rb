@@ -32,7 +32,12 @@ class Movie < ActiveRecord::Base
     actors = Actor.get_actors(imdb_data)
     actors.each { |a| m.actors << Actor.find_or_create_by(name: a) }
     writers = Writer.get_writers(imdb_data)
-    writers.each { |w| m.writers << Writer.find_or_create_by(name: w) }
+    writers.each do |w|
+      writer = Writer.find_or_create_by(name: w)
+      unless m.writers.include? writer
+        m.writers << writer
+      end
+    end
     genres = Genre.get_genres(imdb_data)
     genres.each { |g| m.genres << Genre.find_or_create_by(name: g) }
     m.save!

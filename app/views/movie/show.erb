@@ -3,6 +3,19 @@
   <h4><strong>Year:</strong> <%= @movie.year %></h4>
   <h4><strong>Description:</strong> <%= @movie.description %></h4>
   <h4><strong>Runtime:</strong> <%= @movie.runtime %></h4>
+  <h4><strong>Director:</strong> <%= @movie.director.name %></h4>
+  <h4><strong>Writers</strong></h4>
+  <ul class="list-group">
+  <% @movie.writers.each do |writer| %>
+    <li class="list-group-item"><%= writer.name %></li>
+  <% end %>
+  </ul>
+  <h4><strong>Actors</strong></h4>
+  <ul class="list-group">
+  <% @movie.actors.each do |actor| %>
+    <li class="list-group-item"><%= actor.name %></li>
+  <% end %>
+  </ul>
   <br>
     <a href="/movies/<%= @movie.id %>/edit" class="btn btn-warning" >Edit</a>
     <br>
