@@ -18,7 +18,24 @@
   <%= f.label :runtime %>
   <%= f.text_field :runtime, class: "form-control" %>
 
+  <%= f.label :director %>
+  <% f.fields_for :director do |director_fields| %>
+    <%= director_fields.text_field :name, class: "form-control" %>
+  <% end %>
+
+  <%= f.label :writers %>
+  <% f.fields_for :writers do |writer_fields| %>
+    <%= writer_fields.text_field :name, class: "form-control" %>
+  <% end %>
+
+  <%= f.label :actors %>
+  <% f.fields_for :actors do |actor_fields| %>
+    <%= actor_fields.text_field :name, class: "form-control" %>
+  <% end %>
+
   <%= f.submit :update, class: "btn btn-primary" %>
 
 <% end %>
+
+<%= image_tag @movie.poster, class: "col-md-5" %>
 
